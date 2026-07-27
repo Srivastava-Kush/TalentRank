@@ -78,6 +78,11 @@ def _extract_name(resume_text: str, fallback_file_name: str) -> str:
         if candidate:
             return _titlecase_name(candidate)
 
+    first_line = next((line for line in text.splitlines() if line.strip()), text)
+    name_candidate = re.split(r",|;|\|", first_line, maxsplit=1)[0].strip()
+    if re.fullmatch(r"[A-Za-z][A-Za-z.'-]*(?:\s+[A-Za-z][A-Za-z.'-]*){1,2}", name_candidate):
+        return _titlecase_name(name_candidate)
+
     return _fallback_name_from_file(fallback_file_name)
 
 
